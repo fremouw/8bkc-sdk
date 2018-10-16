@@ -15,9 +15,13 @@ COMPONENT_OBJS := hexdump.o kcugui.o vfs-stdout.o
 ifdef CONFIG_HW_POCKETSPRITE
 COMPONENT_OBJS += io-pksp.o kchal-pksp.o ssd1331.o
 else
+ifdef CONFIG_HW_WIFIBOY32
+COMPONENT_OBJS += kchal-wboy32.o spi_lcd.o 
+else
 COMPONENT_OBJS += kchal-fake.o spi_lcd.o 
 ifdef CONFIG_HW_INPUT_PSX
 COMPONENT_OBJS += psxcontroller.o
+endif
 endif
 endif
 
