@@ -117,11 +117,6 @@ void fakeCustomKeyInit(){
 
 //User Custom buttons as input
 static void kchal_mgmt_task(void *args) {
-	#if CONFIG_HW_JOYSTICK_ENABLE
-	struct adc_info updown   = {2096,0,4096};
-	struct adc_info leftright= {2096,0,4096};
-	fakejoystickInit();
-	#endif
 	fakeCustomKeyInit();
 	printf("Using custom buttons for input.\n");
 	int b;
