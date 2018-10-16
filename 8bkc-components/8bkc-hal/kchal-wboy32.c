@@ -37,12 +37,6 @@ SemaphoreHandle_t configMux;
 #define OLED_REAL_H 320
 #define OLED_REAL_W 240
 
-//Bit used as pocketsprite screen
-#define OLED_FAKE_XOFF ((OLED_REAL_W-KC_SCREEN_W)/2)
-#define OLED_FAKE_W KC_SCREEN_W
-#define OLED_FAKE_YOFF ((OLED_REAL_H-KC_SCREEN_H)/2)
-#define OLED_FAKE_H KC_SCREEN_H
-
 typedef struct {
 	uint8_t volume;
 	uint8_t brightness;
@@ -244,16 +238,16 @@ void kchal_wait_keys_released() {
 
 void kchal_send_fb(const uint16_t *fb) {
 	xSemaphoreTake(oledMux, portMAX_DELAY);
-	spi_lcd_send(OLED_FAKE_XOFF, OLED_FAKE_YOFF, OLED_FAKE_W, OLED_FAKE_H, fb);
+	spi_lcd_send(0, 0, OLED_REAL_W, OLED_REAL_H, fb);
 	xSemaphoreGive(oledMux);
 }
 
 void kchal_send_fb_partial(const uint16_t *fb, int x, int y, int w, int h) {
 	if (w<=0 || h<=0) return;
-	if (x<0 || x+w>OLED_FAKE_W) return;
-	if (y<0 || y+h>OLED_FAKE_H) return;
+	if (x<0 || x+w>OLED_REAL_W) return;
+	if (y<0 || y+h>OLED_REAL_H) return;
 	xSemaphoreTake(oledMux, portMAX_DELAY);
-	spi_lcd_send(x+OLED_FAKE_XOFF, y+OLED_FAKE_YOFF, w, h, fb);
+	spi_lcd_send(x, y, w, h, fb);
 	xSemaphoreGive(oledMux);
 }
 
