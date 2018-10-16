@@ -282,7 +282,7 @@ static void kchal_init_common() {
 	initstate|=INIT_COMMON_DONE;
 }
 
-void kchal_init_hw() {
+void kchal_init_hw(int flags) {
 	if (initstate&INIT_HW_DONE) return; //already did this
 	oledMux=xSemaphoreCreateMutex();
 	configMux=xSemaphoreCreateMutex();
@@ -315,7 +315,7 @@ void kchal_init_hw() {
 	if (initstate==(INIT_HW_DONE|INIT_SDK_DONE)) kchal_init_common();
 }
 
-void kchal_init_sdk() {
+void kchal_init_sdk(int flags) {
 	esp_err_t r;
 	if (initstate&INIT_SDK_DONE) return; //already did this
 	//Hack: This initializes a bunch of locks etc; that process uses a bunch of locks. If we do not
@@ -360,8 +360,8 @@ void kchal_init_sdk() {
 }
 
 void kchal_init() {
-	kchal_init_hw();
-	kchal_init_sdk();
+	kchal_init_hw(0);
+	kchal_init_sdk(0);
 }
 
 uint32_t kchal_get_keys() {
