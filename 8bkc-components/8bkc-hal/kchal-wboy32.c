@@ -155,16 +155,16 @@ void kchal_init_hw(int flags) {
 	configMux=xSemaphoreCreateMutex();
 	//Route DAC
 	i2s_set_pin(0, NULL);
-	i2s_set_dac_mode(I2S_DAC_CHANNEL_LEFT_EN);
-	//I2S enables *both* DAC channels; we only need DAC2. Do some Deeper Magic to make this into
+	i2s_set_dac_mode(I2S_DAC_CHANNEL_RIGHT_EN);
+	//I2S enables *both* DAC channels; we only need DAC1. Do some Deeper Magic to make this into
 	//an essentially uninitialized GPIO pin again.
-	CLEAR_PERI_REG_MASK(RTC_IO_PAD_DAC1_REG, RTC_IO_PDAC1_DAC_XPD_FORCE_M);
-	CLEAR_PERI_REG_MASK(RTC_IO_PAD_DAC1_REG, RTC_IO_PDAC1_XPD_DAC_M);
+	CLEAR_PERI_REG_MASK(RTC_IO_PAD_DAC2_REG, RTC_IO_PDAC2_DAC_XPD_FORCE_M);
+	CLEAR_PERI_REG_MASK(RTC_IO_PAD_DAC2_REG, RTC_IO_PDAC2_XPD_DAC_M);
 	gpio_config_t io_conf={
 		.intr_type=GPIO_INTR_DISABLE,
 		.mode=GPIO_MODE_INPUT,
 		.pull_up_en=1,
-		.pin_bit_mask=(1<<25)
+		.pin_bit_mask=(1<<26)
 	};
 	gpio_config(&io_conf);
 
