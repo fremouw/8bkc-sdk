@@ -23,6 +23,15 @@
 SemaphoreHandle_t oledMux;
 SemaphoreHandle_t configMux;
 
+//Buttons. Pressing a button pulls down the associated GPIO
+#define GPIO_BTN_RIGHT ((uint64_t)1<<32)
+#define GPIO_BTN_LEFT (1<<17)
+#define GPIO_BTN_UP ((uint64_t)1<<33)
+#define GPIO_BTN_DOWN (1<<27)
+#define GPIO_BTN_B ((uint64_t)1<<35)
+#define GPIO_BTN_A ((uint64_t)1<<34)
+#define GPIO_BTN_SELECT ((uint64_t)1<<39)
+#define GPIO_BTN_START (1<<23)
 
 //The hardware size of the display.
 #define OLED_REAL_H 320
@@ -93,6 +102,14 @@ void fakeCustomKeyInit(){
 		.mode=GPIO_MODE_INPUT,
 		.pull_up_en=1,
 		// .pin_bit_mask=((1<<CONFIG_HW_RIGHT_BUTTON)|(1<<CONFIG_HW_LEFT_BUTTON)|(1<<CONFIG_HW_UP_BUTTON)|(1<<CONFIG_HW_DOWN_BUTTON)|(1<<CONFIG_HW_B_BUTTON)|(1<<CONFIG_HW_A_BUTTON)|(1<<CONFIG_HW_SELECT_BUTTON)|(1<<CONFIG_HW_START_BUTTON))
+		.pin_bit_mask=(GPIO_BTN_RIGHT
+			| GPIO_BTN_LEFT
+			| GPIO_BTN_UP
+			| GPIO_BTN_DOWN
+			| GPIO_BTN_B
+			| GPIO_BTN_A
+			| GPIO_BTN_SELECT
+			| GPIO_BTN_START)
 	};
 	gpio_config(&io_conf);
 }
@@ -112,15 +129,15 @@ static void kchal_mgmt_task(void *args) {
 		b=0;
 		uint64_t io=((uint64_t)GPIO.in1.data<<32)|GPIO.in;
 
-		// if (!(io&(1<<CONFIG_HW_RIGHT_BUTTON))) b|=KC_BTN_RIGHT;
-		// if (!(io&(1<<CONFIG_HW_LEFT_BUTTON)))  b|=KC_BTN_LEFT;
-		// if (!(io&(1<<CONFIG_HW_UP_BUTTON)))    b|=KC_BTN_UP;
-		// if (!(io&(1<<CONFIG_HW_DOWN_BUTTON)))  b|=KC_BTN_DOWN;
+		if (!(io&GPIO_BTN_RIGHT)) b|=KC_BTN_RIGHT;
+		if (!(io&GPIO_BTN_LEFT))  b|=KC_BTN_LEFT;
+		if (!(io&GPIO_BTN_UP))    b|=KC_BTN_UP;
+		if (!(io&GPIO_BTN_DOWN))  b|=KC_BTN_DOWN;
 		
-		// if (!(io&(1<<CONFIG_HW_SELECT_BUTTON))) b|=KC_BTN_SELECT;
-		// if (!(io&(1<<CONFIG_HW_START_BUTTON)))  b|=KC_BTN_START;
-		// if (!(io&(1<<CONFIG_HW_A_BUTTON)))      b|=KC_BTN_A;
-		// if (!(io&(1<<CONFIG_HW_B_BUTTON)))      b|=KC_BTN_B;
+		if (!(io&GPIO_BTN_SELECT)) b|=KC_BTN_SELECT;
+		if (!(io&GPIO_BTN_START))  b|=KC_BTN_START;
+		if (!(io&GPIO_BTN_A))      b|=KC_BTN_A;
+		if (!(io&GPIO_BTN_B))      b|=KC_BTN_B;
 		
 	    printf("%02x\n",b);
 		buttons=b;

@@ -45,7 +45,7 @@ config HW_WROVERKIT
 	default n if HW_CUSTOM
 	default y if HW_WROVERKIT_V1
 	default y if HW_WROVERKIT_V2
-	default 0 if HW_WIFIBOY32
+	default n if HW_WIFIBOY32
 	default n if HW_POCKETSPRITE
 
 config HW_LCD_TYPE
@@ -205,60 +205,51 @@ config HW_LEFTRIGHT_AXIS_INVERT
 config HW_UP_BUTTON
 	int "GPIO pin for Up button"
 	depends on !HW_JOYSTICK_ENABLE
-	range 0 39
+	range 0 32
 	default 31
-	default 33 if HW_WIFIBOY32
 
 config HW_DOWN_BUTTON
 	int "GPIO pin for Down button"
 	depends on !HW_JOYSTICK_ENABLE
-	range 0 39
+	range 0 32
 	default 30
-	default 27 if HW_WIFIBOY32
 	
 config HW_LEFT_BUTTON
 	int "GPIO pin for Left button"
 	depends on !HW_JOYSTICK_ENABLE
-	range 0 39
+	range 0 32
 	default 29
-	default 17 if HW_WIFIBOY32
 	
 config HW_RIGHT_BUTTON
 	int "GPIO pin for Right button"
 	depends on !HW_JOYSTICK_ENABLE
-	range 0 39
+	range 0 32
 	default 28
-	default 32 if HW_WIFIBOY32
 	
 config HW_START_BUTTON
 	int "GPIO pin for Start button"
-	range 0 39
+	range 0 32
 	default 27
-	default 23 if HW_WIFIBOY32
 	
 config HW_SELECT_BUTTON
 	int "GPIO pin for Select button"
-	range 0 39
+	range 0 32
 	default 26
-	default 39 if HW_WIFIBOY32
 		
 config HW_A_BUTTON
 	int "GPIO pin for A button"
-	range 0 39
+	range 0 32
 	default 25
-	default 34 if HW_WIFIBOY32
 		
 config HW_B_BUTTON
 	int "GPIO pin for B button"
-	range 0 39
+	range 0 32
 	default 4
-	default 35 if HW_WIFIBOY32
 		
 config HW_PWR_BUTTON
 	int "GPIO pin for Power button"
 	range 0 32
 	default 32
-	default 22 if HW_WIFIBOY32
 	
 endmenu
 
